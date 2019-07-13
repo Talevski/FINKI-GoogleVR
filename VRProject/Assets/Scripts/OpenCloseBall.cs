@@ -8,6 +8,8 @@ public class OpenCloseBall : MonoBehaviour
     float rotSpeed = 40f;
     Animator anim;
 
+    private AudioSource audioSource;
+
     // Use this for initialization
     void Awake()
     {
@@ -18,6 +20,7 @@ public class OpenCloseBall : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         
     }
 
@@ -32,10 +35,14 @@ public class OpenCloseBall : MonoBehaviour
         if (!anim.GetBool("Open_Anim"))
         {
             anim.SetBool("Open_Anim", true);
+            //
+            //audioSource.PlayOneShot(audioSource.clip, 1f);
+            GetComponent<SentenceAssembler>().GetSentence(0);
         }
         else
         {
             anim.SetBool("Open_Anim", false);
+            GetComponent<SentenceAssembler>().GetSentence(1);
         }
     }
 }

@@ -9,12 +9,17 @@ public class VRLookWalk : MonoBehaviour
     public float speed = 3.0f;
     private bool moveForward;
     private CharacterController cc;
+    //
+    //public AudioClip audioClip;
+    private AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
     {
         //cc = GetComponentInParent<CharacterController>();
         cc = GetComponent<CharacterController>();
+        audioSource = GetComponent<AudioSource>();
+        //audioSource.clip = audioClip;
     }
 
     // Update is called once per frame
@@ -33,6 +38,15 @@ public class VRLookWalk : MonoBehaviour
         {
             Vector3 forward = vrCamera.TransformDirection(Vector3.forward);
             cc.SimpleMove(forward * speed);
+        }
+
+        if(moveForward && !audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
+        if (!moveForward)
+        {
+            audioSource.Stop();
         }
     }
 }
