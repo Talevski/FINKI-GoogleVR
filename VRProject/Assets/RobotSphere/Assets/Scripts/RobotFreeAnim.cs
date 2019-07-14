@@ -5,8 +5,9 @@ using UnityEngine;
 public class RobotFreeAnim : MonoBehaviour {
 
 	Vector3 rot = Vector3.zero;
-	float rotSpeed = 40f;
+	float rotSpeed = 50f;
 	Animator anim;
+	public float speed = 25.0f;
 
 	// Use this for initialization
 	void Awake()
@@ -28,6 +29,8 @@ public class RobotFreeAnim : MonoBehaviour {
 		if (Input.GetKey(KeyCode.W))
 		{
 			anim.SetBool("Walk_Anim", true);
+			//
+			transform.position += transform.forward * speed * Time.deltaTime;
 		}
 		else if (Input.GetKeyUp(KeyCode.W))
 		{
