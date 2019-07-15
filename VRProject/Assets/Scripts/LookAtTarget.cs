@@ -6,11 +6,12 @@ public class LookAtTarget : MonoBehaviour
 {
     public Transform target;
     public float rotationSpeed = 1f;
-    public float walkingSpeed = 0.75f;
+    public float walkingSpeed;
     private bool pointerInside = false;
     private bool readyToWalk = false;
     private bool stopWalking = false;
-    private bool stopRolling = false;
+    private bool isRolling = false;
+    private bool distanceWarning = false;
     private float distance;
     Animator anim;
 
@@ -26,7 +27,7 @@ public class LookAtTarget : MonoBehaviour
     {
         distance = Vector3.Distance(transform.position, target.transform.position);
 
-        if(pointerInside && anim.GetBool("Open_Anim"))
+        if(pointerInside && anim.GetBool("Open_Anim") && !isRolling)
         {
             turnAtTarget();
             
@@ -37,10 +38,26 @@ public class LookAtTarget : MonoBehaviour
             
             rollToTarget();
         }
+        if(distance >= 26f && distance <= 26.25f){
+            if(distanceWarning){
+                GetComponent<SentenceAssembler>().GetSentence(4);
+                distanceWarning = false;
+            }
+            else{
+                GetComponent<SentenceAssembler>().GetSentence(3);
+                distanceWarning = true;
+            }
+        
+        if(distance >= 35f && !anim.GetBool("Open_Anim")){
+            GetComponent<SentenceAssembler>().GetSentence(3);
+        }
+            
+        }
 
     }
 
     public void turnAtTarget(){
+        anim.SetBool("Turn_Anim", true);
         Vector3 targetDir = target.position - transform.position;
 
         // The step size is equal to speed times frame time.
@@ -55,18 +72,21 @@ public class LookAtTarget : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime); 
 
         float diff = transform.rotation.eulerAngles.y - rotation.eulerAngles.y;
-        if (Mathf.Abs (diff) <= 2f)
+
+        if(readyToWalk == false && Mathf.Abs(diff) > 3f && distance <= 15){
+            GetComponent<SentenceAssembler>().GetSentence(6);
+        }
+        if (Mathf.Abs(diff) <= 2f)
             readyToWalk = true;
+        anim.SetBool("Turn_Anim", false);
     }
 
     public void walkToTarget(){
-        if(readyToWalk && !stopWalking ){//&& pointerInside){
+        if(readyToWalk && !stopWalking){
+            anim.SetBool("Roll_Anim", false);
             anim.SetBool("Walk_Anim", true);
             transform.position += transform.forward * walkingSpeed * Time.deltaTime;
-        }
-
-        if(!pointerInside){
-            anim.SetBool("Walk_Anim", false);
+            GetComponent<SentenceAssembler>().GetSentence(2);
         }
 
         if(distance <= 7.5f){
@@ -82,17 +102,22 @@ public class LookAtTarget : MonoBehaviour
     public void rollToTarget(){
         if(readyToWalk && !stopWalking && !pointerInside){
             anim.SetBool("Roll_Anim", true);
-            transform.position += transform.forward * walkingSpeed * Time.deltaTime;
+            transform.position += transform.forward * (walkingSpeed * 2) * Time.deltaTime;
+            isRolling = true;
+            if(distance >= 21){
+                GetComponent<SentenceAssembler>().GetSentence(5);
+            }
         }
 
-        if(pointerInside){
-            anim.SetBool("Roll_Anim", false);
-        }
+        //if(pointerInside){
+        //    anim.SetBool("Roll_Anim", false);
+        //}
 
         if(distance <= 20f){
             stopWalking = true;
             readyToWalk = false;
             anim.SetBool("Roll_Anim", false);
+            isRolling = false;
         }
         else{
             stopWalking = false;
@@ -104,5 +129,6 @@ public class LookAtTarget : MonoBehaviour
     }
     public void pointerExit(){
         pointerInside = false;
+        anim.SetBool("Walk_Anim", false);
     }
 }
