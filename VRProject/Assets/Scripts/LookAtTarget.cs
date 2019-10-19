@@ -105,7 +105,7 @@ public class LookAtTarget : MonoBehaviour
             transform.position += transform.forward * (walkingSpeed * 2) * Time.deltaTime;
             isRolling = true;
             if(distance >= 21){
-                GetComponent<SentenceAssembler>().GetSentence(5);
+                //GetComponent<SentenceAssembler>().GetSentence(5);
             }
         }
 

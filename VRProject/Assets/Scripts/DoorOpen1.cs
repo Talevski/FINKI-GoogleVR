@@ -21,5 +21,6 @@ public class DoorOpen1 : MonoBehaviour
         transform.rotation = Quaternion.Euler(90, -75, 180);
         //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(90, -75, 180), 2f * Time.deltaTime);
         GetComponentInParent<SentenceAssembler>().GetSentence(0);
+
     }
 }

@@ -20,5 +20,6 @@ public class DoorClose1 : MonoBehaviour
     {
         transform.rotation = Quaternion.Euler(90, 0, 180);
         //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(90, 0, 180), 2f * Time.deltaTime);
+        
     }
 }

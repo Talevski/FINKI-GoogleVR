@@ -34,5 +34,6 @@ public class GrowTree : MonoBehaviour
         }
         //audioSource.PlayOneShot(audioSource.clip, 1f);
         
+        GameObject.Find("Player").GetComponent<VRLookWalk>().speed += 0.35f;
     }
 }
