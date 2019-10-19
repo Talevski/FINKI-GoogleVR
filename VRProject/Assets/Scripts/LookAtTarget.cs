@@ -33,6 +33,9 @@ public class LookAtTarget : MonoBehaviour
             
             walkToTarget();
         }
+        if(!pointerInside){
+            anim.SetBool("Walk_Anim", false);
+        }
         if(distance >= 19f && anim.GetBool("Open_Anim")){
             turnAtTarget();
             
@@ -86,7 +89,10 @@ public class LookAtTarget : MonoBehaviour
             anim.SetBool("Roll_Anim", false);
             anim.SetBool("Walk_Anim", true);
             transform.position += transform.forward * walkingSpeed * Time.deltaTime;
+<<<<<<< Updated upstream
             GetComponent<SentenceAssembler>().GetSentence(2);
+=======
+>>>>>>> Stashed changes
         }
 
         if(distance <= 7.5f){
